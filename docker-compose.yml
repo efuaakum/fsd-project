@@ -1,0 +1,60 @@
+services:
+
+# 1. Database Service (MySQL 8)
+  db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    container_name: jobbase-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+#      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # networks:
+    #  - jobbase-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+# 2. Backend API Service (Spring Boot)
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: jobbase-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/jobbase-db?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=app_user
+      - SPRING_DATASOURCE_PASSWORD=app_password_here
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 3. Frontend Service (React / Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jobbase-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  mysql_data:
+      
