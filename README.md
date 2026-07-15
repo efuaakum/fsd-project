@@ -37,7 +37,7 @@ Run the following command from your root folder `fsd-project` directory. It quer
   -d type=maven-project \
   -d groupId=com.example \
   -d artifactId=api \
-  -d name=api | tar -xzvf - -C ./api --strip-components=1
+  -d name=api | tar -xzvf - -C ./api
 ```
 
 ### What is this command doing?:
@@ -50,8 +50,6 @@ Run the following command from your root folder `fsd-project` directory. It quer
 - `baseDir=api | tar -xzvf`: Unpacks the zipped contents cleanly into /api without leaving any messy zip files behind.
 
 - `-C ./api`: Tells tar to extract the downloaded files directly inside your existing api directory.
-
-- `--strip-components=1`: Spring Initializr packages everything inside a root folder named `api/` by default. This flag strips that outer folder off during extraction, dropping the files (`src`, `pom.xml`, etc.) cleanly into your existing `./api` directory instead of creating a nested ./api/api folder.
 
 - __Non-destructive__: It will extract the Spring Boot files around your existing api/Dockerfile without overwriting it (unless you happen to already have a file named `pom.xml` or `src/` in there, in which case those specific files would be overwritten).
 
@@ -86,3 +84,9 @@ Select: `Ignore files and continue`
 npm install
 ```
 
+## Running the solution
+Run the following command 
+
+```bash
+docker compose up --build
+```
