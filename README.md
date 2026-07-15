@@ -90,3 +90,9 @@ Run the following command
 ```bash
 docker compose up --build
 ```
+
+
+## Tear down docker
+```
+docker compose down -v
+```
