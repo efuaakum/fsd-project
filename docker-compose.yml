@@ -51,7 +51,7 @@ services:
     container_name: jobbase-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8181:80"
     depends_on:
       - api
 
