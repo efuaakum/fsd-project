@@ -26,8 +26,8 @@ fsd-project/
 ## Prerequisites
 Before you begin, ensure you have the following installed on your machine:
 
-- Docker
-- Git
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Git](https://git-scm.com/)
 
 ## Getting Started
 Follow these steps to set up and run the entire application stack locally.
@@ -88,4 +88,4 @@ If you modify your .env credentials, database schemas, or want to start with a c
 docker compose down -v
 ```
 
-__⚠️ Note:__ The `-v` flag deletes the underlying Docker volume (fsd-project_mysql_data). The next time you run `docker compose up`, MySQL will freshly recreate the database using your current `.env` configurations.
+__⚠️ Note:__ The `-v` flag deletes the underlying Docker volume (`fsd-project_mysql_data`). The next time you run `docker compose up`, MySQL will freshly recreate the database using your current `.env` configurations.
